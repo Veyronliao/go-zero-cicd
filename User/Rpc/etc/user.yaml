@@ -1,0 +1,10 @@
+Name: user.rpc
+ListenOn: 0.0.0.0:15010
+Etcd:
+  Hosts:
+  - 192.168.211.151:2379
+  Key: user.rpc
+
+DB:
+  DataSource: root:root@tcp(192.168.211.151:3306)/Bolog_User?charset=utf8mb4&parseTime=True&loc=Local
+  

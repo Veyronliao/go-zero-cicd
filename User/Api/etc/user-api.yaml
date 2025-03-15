@@ -1,0 +1,11 @@
+Name: user-api
+Host: 0.0.0.0
+Port: 8888
+Auth:
+  AccessSecret: "liaoweilo!@#$%" # AccessSecret的值要是8位以上的字符串
+  AccessExpire: 10000 #AccessExpire是过期时间，单位是秒
+UserRpc: 
+  Etcd: 
+    Hosts:
+    - 192.168.211.151:2379
+    Key: user.rpc

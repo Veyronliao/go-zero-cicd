@@ -1,0 +1,84 @@
+syntax = "v1"
+
+type AddUserRequest {
+	UserName  string `json:"username"`
+	PassWord  string `json:"password"`
+	Gender    int    `json:"gender"`
+	Email     string `json:"email"`
+	Telephone string `json:"telephone"`
+	Age       int    `json:"age"`
+}
+
+type DeleteUserRequest {
+	Id int `json:"id"`
+}
+
+type GetUserInfoRequest {
+	Id int `json:"id"`
+}
+
+type UserAddResponse {
+	Code int `json:"code"`
+}
+
+type UpdateUserRequest {
+	Id        int    `json:"id"`
+	UserName  string `json:"username"`
+	PassWord  string `json:"password"`
+	Gender    int    `json:"gender"`
+	Email     string `json:"email"`
+	Telephone string `json:"telephone"`
+	Age       int    `json:"age"`
+}
+
+type GetUserListPageRequest {
+	PageSize    int    `json:"pagesize"`
+	CurrentPage int    `json："currentpage"`
+	UserName    string `json:"username"`
+}
+
+type GetUserListPageResponse {
+	data []GetUserListPageData `json:"data"`
+}
+
+type GetUserListPageData {
+	Id        int    `json:"id"`
+	UserName  string `json:"username"`
+	PassWord  string `json:"password"`
+	Gender    int    `json:"gender"`
+	Email     string `json:"email"`
+	Telephone string `json:"telephone"`
+	Age       int    `json:"age"`
+}
+
+type UserLoginRequest {
+	UserName string `json:"username"`
+	PassWord string `json:"password"`
+}
+
+@server (
+	jwt:    Auth
+	prefix: /user
+)
+service user-api {
+	@handler DeleteUserHandler
+	get /delete (DeleteUserRequest) returns (int)
+
+	@handler GetUserInfoHandler
+	get /info (GetUserInfoRequest) returns (UserAddResponse)
+
+	@handler UpdateUserHandler
+	post /update (UpdateUserRequest) returns (int)
+
+	@handler GetUserListPageHandler
+	get /userpage (GetUserListPageRequest) returns (GetUserListPageResponse)
+}
+
+service user-api {
+	@handler UserAddHandler
+	post /add (AddUserRequest) returns (int)
+
+	@handler UserLoginHandler
+	post /login (UserLoginRequest) returns (int)
+}
+

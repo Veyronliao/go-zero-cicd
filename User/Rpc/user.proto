@@ -1,0 +1,97 @@
+syntax="proto3";
+package user;
+option go_package="./user";
+///创建用户入参
+message CreateUserReq{
+    int32 Id=1;
+    string UserName=2;
+    string PassWord=3;
+    int32 Gender=4;
+    int32 Age=5;
+    string Email=6;
+    string Telephone=7;
+}
+//创建用户出参
+message CreateUserRespon{
+    int32 result=1;
+}
+//更新用户入参
+message UpdateUserReq{
+    int32 Id=1;
+    string UserName=2;
+    string PassWord=3;
+    int32 Gender=4;
+    int32 Age=5;
+    string Email=6;
+    string Telephone=7;
+}
+//更新用户出参
+message UpdateUserRespon{
+    int32 result=1;
+}
+//查询分页数据data
+message PageListRespData{
+    int32 Id=1;
+    string UserName=2;
+    string PassWord=3;
+    int32 Gender=4;
+    int32 Age=5;
+    string Email=6;
+    string Telephone=7;
+    string CreateTime=8;
+}
+//更新密码入参
+message UpdateUserPassWordReq{
+    int32 Id=1;
+    string PassWord=2;
+}
+//更新密码出参
+message UpdateUserPassWordResponse{
+    int32 result=1;
+}
+//删除用户入参
+message DeleteUserReq{
+    int32 Id=1;
+}
+//删除用户出参
+message DeleteUserResponse{
+    int32 result=1;
+}
+//查询用户信息入参
+message GetUserInfoReq{
+    int32 Id=1;
+}
+//查询用户信息出参
+message GetUserInfoResponse{
+    PageListRespData data=1;
+}
+//查询分页数据入参
+message GetUserListPageReq{
+    uint32 pagesize=1;
+    uint32 pageindex=2;
+    CreateUserReq selectoption=3;
+}
+//查询分页数据出参
+message GetUserListPageResponse{
+    repeated PageListRespData data= 1;
+    int32 count=2;
+}
+//登录入参
+message LoginReq{
+    string username=1;
+    string password=2;
+}
+message LoginResponse{
+    int32 result=1;
+    int32 UserId=2;
+}
+//rpc方法
+service User{
+    rpc CreateUser (CreateUserReq) returns (CreateUserRespon);
+    rpc DeleteUser (DeleteUserReq) returns (DeleteUserResponse);
+    rpc UpdateUser (UpdateUserReq) returns (UpdateUserRespon);
+    rpc UpdateUserPassWord (UpdateUserPassWordReq) returns(UpdateUserPassWordResponse);
+    rpc GetUserInfoById(GetUserInfoReq) returns(GetUserInfoResponse);
+    rpc GetUserListPage(GetUserListPageReq)returns(GetUserListPageResponse);
+    rpc Login(LoginReq)returns(LoginResponse);
+}

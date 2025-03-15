@@ -1,0 +1,73 @@
+def POD_LABEL = "jenkinspod-${UUID.randomUUID().toString()}"
+podTemplate(label: POD_LABEL, cloud: 'veyron-k8s', containers: [
+    containerTemplate(
+    name: 'jnlp', 
+    image:'jenkins/inbound-agent', 
+    args: '${computer.jnlpmac} ${computer.name}',
+    ttyEnabled: true,
+    privileged: true,
+    alwaysPullImage: false),
+    containerTemplate(name: 'goctl', image: 'kevinwan/goctl', ttyEnabled: true, command: 'cat',alwaysPullImage: false),
+    containerTemplate(name: 'kubectl',image: 'cnych/kubectl', ttyEnabled: true,command: 'cat',alwaysPullImage: false)
+  ],volumes: [
+        hostPathVolume(hostPath: '/usr/bin/docker', mountPath:'/usr/bin/docker'),
+        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath:'/var/run/docker.sock'),
+        hostPathVolume(hostPath: '/etc/docker/daemon.json', mountPath:'/etc/docker/daemon.json')
+    ]) {
+    node(POD_LABEL) {
+        stage('拉取GitLab仓库代码') {
+            checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'd837f2f8-745e-44b7-b078-c650ac4bd7e8', url: 'http://192.168.211.150/liaoweilong/go-zero-bolog.git']])
+            env.commit_id = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+            sh 'echo ${commit_id}'
+            sh 'echo 构建服务类型：${JOB_NAME}-$service'
+        }
+        stage('拉取配置文件') {
+            sh 'echo 开始测试'
+        }
+        stage('编译') {
+            container('goctl') {
+                sh 'echo goctl版本检测'
+                sh 'goctl --version'
+                sh 'rm User/Rpc/Dockerfile -rf'
+                sh 'echo 使用goctl生成dockerfile'
+                sh 'cd User/Rpc/ && goctl docker -go ${service}.go && ls -l'
+            }
+       }
+       stage('自动测试') {
+            sh 'echo 开始测试'
+       }
+       stage('打包镜像') {
+            container('jnlp') {
+                sh 'echo docker --version'
+                sh 'docker --version'
+                sh 'cat /etc/docker/daemon.json'
+                env.image = sh(returnStdout: true, script: 'echo ${JOB_NAME}-${service}:${commit_id}').trim()
+                sh 'echo 镜像名称：${image} && cp User/Rpc/Dockerfile ./  && ls -l && docker build  -t ${image} .'
+            }    
+       }
+       stage('上传镜像到Harbor') {
+            echo "上传到镜像仓库"
+            sh 'docker login --username=${dockerusername} --password=${dockerpwd} http://${dockerrepo}'
+            sh 'docker tag  ${image} ${dockerrepo}/go-zero-bolog/${image}'
+            sh 'docker push ${dockerrepo}/go-zero-bolog/${image}'
+       }
+       stage('部署到k8s集群') {
+            container('goctl'){
+                echo "goctl生成yaml部署文件"
+                env.deployYaml = sh(returnStdout: true, script: 'echo ${JOB_NAME}-${service}-deploy.yaml').trim()
+                env.port='15010'
+                sh 'echo ${port}'
+                sh 'rm -f ${deployYaml}'
+                sh 'goctl kube deploy -replicas 1 -requestCpu 200 -requestMem 50 -limitCpu 300 -limitMem 100 -name ${JOB_NAME}-${service} -namespace go-zero-bolog -image ${dockerrepo}/go-zero-bolog/${image} -o ${deployYaml} -port ${port} -serviceAccount find-endpoints '
+                sh "sed -i 's/v2beta2/v2/g' ${deployYaml}"
+            }
+            container('kubectl') {
+                withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8scert', namespace: 'go-zero-bolog', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.211.131:6443') {
+                    echo "部署到k8s"
+                    sh 'kubectl apply -f ${deployYaml}'
+                    sh 'cat ${deployYaml}'
+                }
+            }
+       }
+    }
+}
