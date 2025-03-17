@@ -1,4 +1,4 @@
-## 	1、CI/CD环境搭建之安装harbor
+## 	1、CI/CD环境搭建之安装Jenkins
 
 
 在/root下创建Jenkins文件夹
@@ -75,6 +75,12 @@ $ docker-compose up -d
 ##### 添加harbor仓库配置
 这里配置的环境变量将会在pipeline流水线中的脚本中使用到
 <img src="./images/jenkins/jenkins-11.png" alt="jenkins-11.png" style="zoom:50%;" />
+
+到这里Jenkins初步安装部署完成，下一节我们将正式使用Jenkins、harbor、gitlab、k8s构建流水线部署rpc服务
+
+
+
+
 
 
 
