@@ -2,7 +2,7 @@
 
 ## 1、概述
 
-项目开发好后，我们需要部署项目到线上，这里基于gitlab + jenkins + harbor + k8s 来搭建CI/CD部署环境
+项目开发好后，我们需要部署项目到线上，这里基于gitlab + jenkins + harbor + k8s 来搭建CI/CD部署环境，注意：这里的k8s使用的runtime是containerd。
 
 harbor : 镜像仓库
 
