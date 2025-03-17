@@ -80,9 +80,7 @@ $  docker-compose up -d
 
 <img src="./images/gitlab/gitlab-01.png" alt="gitlab-01.png" style="zoom:50%;" />
 
-首次设置新密码  ： 123456789
-
-账号默认是root
+首次设置新密码  ： 123456789；账号默认是root
 <img src="./images/gitlab/gitlab-02.png" alt="gitlab-02.png" style="zoom:50%;" />
 
 ##### 2.3 配置ssh公钥
