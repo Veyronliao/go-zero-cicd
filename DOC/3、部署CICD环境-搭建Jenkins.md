@@ -1,4 +1,4 @@
-## 	1、CI/CD环境搭建之安装Jenkins
+## 	CI/CD环境搭建之安装Jenkins
 
 
 在/root下创建Jenkins文件夹
