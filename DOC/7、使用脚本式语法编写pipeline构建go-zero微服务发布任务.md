@@ -138,6 +138,6 @@ Jenkins显示构建任务已经完成
 
 在k8s集群查看显示service、pod已经起来
 
-<img src="./images/pipeline/pipeline-03.png" alt="pipeline-03.png" style="zoom:50%;" />
+<img src="./images/pipeline/pipeline-04.png" alt="pipeline-04.png" style="zoom:50%;" />
 
 至此go-zero微服务rpc的cicd例子完成了，至于api的构建只需如法炮制即可，后续将会完成bolog的其它功能。
