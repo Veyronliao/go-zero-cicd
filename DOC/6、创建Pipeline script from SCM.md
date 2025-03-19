@@ -84,7 +84,7 @@ repository填写gitlab项目的地址，credentials选择新建的拉取代码�
 
 提交jenkinsfile验证自动触发了流水线构建任务
 
-编写Jenkinsfile
+在项目根目录添加Jenkinsfile
 
 ```shell
 pipeline{
