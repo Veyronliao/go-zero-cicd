@@ -130,7 +130,7 @@ containers:
 
 <img src="./images/scm/scm-18.png" alt="scm-18.png" style="zoom:50%;" />
 
-虽然构建任务失败了，但是成功自动触发了构建任务。
+成功自动触发了构建任务。
 
 下一章将使用pipeline实现go-zero微服务的cicd。
 
