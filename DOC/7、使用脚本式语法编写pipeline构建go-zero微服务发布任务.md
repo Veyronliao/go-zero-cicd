@@ -2,8 +2,10 @@
 
 ### 配置kubernetes从harbor镜像仓库拉取镜像
 
-由于我使用的是基于containerd运行时的kubernetes，所以在开始写pipeline之前先要设置好containerd配置文件，让k8s集群可以从harbor拉取到镜像文件
+由于我使用的是基于containerd运行时的kubernetes，所以在开始写pipeline之前先要设置好containerd配置文件，让k8s集群可以从harbor镜像库拉取到镜像文件
+
 修改/etc/containerd/config.toml
+
 ```shell
 $ vim /etc/containerd/config.toml
 ```
@@ -17,7 +19,8 @@ $ vim /etc/containerd/config.toml
 $ systemctl daemon-reload && systemctl restart containerd.service
 ```
 
-由于是配置使用http方式拉取镜像，所以还要配置vim /etc/docker/daemon.json文件，增加 insecure-registries 选项，如下所示
+由于是设置了使用http方式拉取镜像，所以还要设置vim /etc/docker/daemon.json文件，增加 insecure-registries 选项，如下所示
+
 ```shell
 {
   "exec-opts":["native.cgroupdriver=systemd"],
@@ -37,6 +40,7 @@ sudo systemctl restart docker
 由于pipeline中的container容器挂载了k8s节点上的docker，当Jenkins slave在k8s集群中以pod的形式运行并开始构建任务时需要用到docker，会调用k8s集群节点上的docker，比如当生成镜像后要推送到harbor镜像仓库的时候需要使用docker login命令，这时候会出现权限不足的情况导致pipeline构建任务失败，目前我的办法是给k8s集群节点上的/var/run/docker.sock文件加上777权限，也就是docker权限组以外的用户拥有和docker权限组一样的权限，当然这只是权宜之计，日后有时间会研究有没有其它方法解决这个问题
 
 jenkins错误
+
 ```shell
 permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.45/build?buildargs=%7B%7D&cachefrom=%5B%5D&cgroupparent=&cpuperiod=0&cpuquota=0&cpusetcpus=&cpusetmems=&cpushares=0&dockerfile=Dockerfile&labels=%7B%7D&memory=0&memswap=0&networkmode=default&rm=1&shmsize=0&t=bolog-rpc-user%3A57c2bf8&target=&ulimits=%5B%5D&version=1": dial unix /var/run/docker.sock: connect: permission denied
 ```
@@ -123,6 +127,7 @@ podTemplate(label: POD_LABEL, cloud: 'veyron-k8s', containers: [
     }
 }
 ```
+
 提交pipeline脚本文件到gitlab，查看Jenkins任务已经开始构建
 
 <img src="./images/pipeline/pipeline-02.png" alt="pipeline-02.png" style="zoom:50%;" />
