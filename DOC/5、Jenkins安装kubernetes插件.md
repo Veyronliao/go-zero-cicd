@@ -2,7 +2,8 @@
 
 ### jenkins动态slave
 
-Jenkins可以使用静态节点(slave)和动态节点两种方式来构建任务，使用动态节点构建任务可以更好的利用资源，所谓动态节点构建任务就是在kubernetes集群里动态的创建一个pod,在这个pod里面跑我们写的pipeline脚本来构建任务，构建任务完成后这个pod会自动销毁
+Jenkins可以使用静态节点(slave)和动态节点两种方式来构建任务，使用动态节点构建任务可以更好的利用资源，所谓动态节点构建任务就是在kubernetes集群里动态的创建一个pod,在这个pod里面跑我们写的pipeline脚本来构建任务，
+构建任务完成后这个pod会自动销毁，静态slave这里不做介绍。
 
 ### Jenkins安装kubernetes插件
 
