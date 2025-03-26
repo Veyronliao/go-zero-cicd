@@ -1,5 +1,5 @@
 def POD_LABEL = "jenkinspod-${UUID.randomUUID().toString()}"
-podTemplate(label: POD_LABEL, cloud: 'veyron-k8s', containers: [
+podTemplate(label: POD_LABEL, cloud: 'veyron-k8s', serviceAccount: 'default',containers: [
     containerTemplate(
     name: 'jnlp', 
     image:'jenkins/inbound-agent', 
