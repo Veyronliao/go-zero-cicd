@@ -50,11 +50,46 @@ permission denied while trying to connect to the Docker daemon socket at unix://
 ```shell
 $ chmod 777  /var/run/docker.sock
 ```
+### go-zero部署到k8s需要创建个serviceAccount
+```shell
+#创建账号
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: go-zero-bolog
+  name: find-endpoints
+
+---
+#创建角色对应操作
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: discov-endpoints
+rules:
+- apiGroups: [""]
+  resources: ["endpoints"]
+  verbs: ["get","list","watch"]
+
+---
+#给账号绑定角色
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: find-endpoints-discov-endpoints
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: discov-endpoints
+subjects:
+- kind: ServiceAccount
+  name: find-endpoints
+  namespace: go-zero-bolog
+```
 ### 编写pipeline脚本
 
 ```shell
 def POD_LABEL = "jenkinspod-${UUID.randomUUID().toString()}"
-podTemplate(label: POD_LABEL, cloud: 'veyron-k8s', containers: [
+podTemplate(label: POD_LABEL, cloud: 'veyron-k8s', serviceAccount: 'default', containers: [
     containerTemplate(
     name: 'jnlp', 
     image:'jenkins/inbound-agent', 
