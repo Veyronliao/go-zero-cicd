@@ -1,7 +1,10 @@
 
 
-## 	elasticsearch重置密码
+## 	elasticsearch8.18.3重置密码
+重置elasticsearch密码出现错误：
+ERROR: Failed to determine the health of the cluster., with exit code 69
 
+解决办法：
 1、修改es配置文件：/etc/elasticsearch/elasticsearch.yml
 
 将xpack.security.http.ssl的enable改为false
