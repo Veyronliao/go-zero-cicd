@@ -1,4 +1,4 @@
-## 	创建pipeline script from SCM实现提交代码触发构建任务
+## 	创建SCM实现提交代码触发构建任务
 
 ### jenkins创建用于拉取代码的凭证
 
