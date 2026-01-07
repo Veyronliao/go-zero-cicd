@@ -44,7 +44,7 @@
 ├── scripts/               # 构建 / 部署脚本
 ├── helm/                  # Helm Chart 或 K8s 部署文件
 └── README.md
-
+```
 
 目录：
 [1、CI/CD环境搭建之安装gitlab](./DOC/1、部署CICD环境-搭建gitlab.md)<br>
