@@ -26,7 +26,6 @@ CD：自动部署到 Kubernetes
 GitHub
 
 🧱 项目结构（示例）
-md
 .
 ├── .gitlab-ci.yml         # GitLab CI/CD 配置（触发 Jenkins 或自身流程）
 ├── Jenkinsfile            # Jenkins Pipeline 定义
@@ -36,6 +35,7 @@ md
 ├── helm/                  # Helm Chart 或 k8s 部署 manifest
 ├── scripts/               # 辅助脚本（构建、部署）
 └── README.md
+
 
 🚀 CI/CD 流程概览
 📌 持续集成 (CI)
