@@ -46,7 +46,8 @@
 └── README.md
 ```
 
-目录：
+## 文章目录：
+
 [1、CI/CD环境搭建之安装gitlab](./DOC/1、部署CICD环境-搭建gitlab.md)<br>
 [2、部署CICD环境-搭建harbor](./DOC/2、部署CICD环境-搭建harbor.md)<br>
 [3、部署CICD环境-搭建Jenkins](./DOC/3、部署CICD环境-搭建Jenkins.md)<br>
